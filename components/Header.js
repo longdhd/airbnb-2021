@@ -7,7 +7,7 @@ function Header() {
       {/* Logo */}
       <div className="relative flex h-10 items-center cursor-pointer my-auto">
         <Image
-          src="/../public/img/Airbnb_Logo_Bélo.svg.png"
+          src="https://links.papareact.com/qd3"
           layout="fill"
           objectFit="contain"
           objectPosition="left"
