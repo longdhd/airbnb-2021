@@ -27,7 +27,7 @@ function Search({searchResult}) {
               <p className="button-hover-action">More filters</p>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col last:pb-5">
           {searchResult?.map(({img, location, title, description, star, price, total},index) => (
             <InfoCard key={index} img={img} location={location} title={title} description={description} star={star} price={price} total={total}/>
           ))}
