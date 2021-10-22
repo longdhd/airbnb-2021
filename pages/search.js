@@ -34,7 +34,7 @@ function Search({searchResult}) {
           ))}
           </div>
         </section>
-        <section className="hidden lg:inline-flex lg:min-w-[600px]">
+        <section className="hidden lg:inline-flex lg:min-w-[400px]">
           <Mapbox searchResult={searchResult}/>
         </section>
       </main>
