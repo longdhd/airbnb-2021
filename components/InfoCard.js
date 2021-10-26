@@ -3,6 +3,8 @@ import Image from "next/image";
 import { HeartIcon } from "@heroicons/react/outline";
 import { StarIcon } from "@heroicons/react/solid";
 
+
+
 function InfoCard({
   img,
   location,
@@ -12,6 +14,9 @@ function InfoCard({
   price,
   total,
 }) {
+  const getRandomInt = (max) => {
+    return Math.floor(Math.random() * max);
+  }
   return (
     <div className="flex py-7 px-2 pr-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out">
       <div className="relative h-24 w-40 md:h-52 md:w-80 flex-shrink-0 first:border-t">
@@ -28,11 +33,11 @@ function InfoCard({
           <div className="flex justify-between items-end pt-5">
             <p className="flex items-center">
               <StarIcon className="h-5 text-red-400"/>
-              {star}
+              {star} <span className="font-extralight text-gray-500 ml-1"> ({getRandomInt(120)} reviews)</span>
             </p>
             <div>
               <p className="text-lg lg:text-2xl font-semibold pb-2">{price}</p>
-              <p className="text-right font-extralight">{total}</p>
+              <p className="text-right font-extralight text-gray-500 underline">{total}</p>
             </div>
           </div>
       </div>

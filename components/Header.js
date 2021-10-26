@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import { DateRangePicker } from "react-date-range";
 
-function Header({placeholder}) {
+function Header({ placeholder }) {
   const [searchInput, setSearchInput] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -40,7 +40,7 @@ function Header({placeholder}) {
         location: searchInput,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        guestNumber: guestNumber
+        guestNumber: guestNumber,
       },
     });
   };
@@ -67,7 +67,7 @@ function Header({placeholder}) {
           onChange={(e) => {
             setSearchInput(e.target.value);
           }}
-          className="flex-grow pl-5 md:pr-3 outline-none bg-transparent text-gray-600 placeholder-gray-400"
+          className="flex-grow pl-5 md:pr-3 outline-none font-semibold bg-transparent text-gray-600 placeholder-gray-600"
           type="text"
           placeholder={placeholder || "Start your search"}
         ></input>
@@ -75,14 +75,18 @@ function Header({placeholder}) {
       </div>
 
       {/* Sign up */}
-      <div className="flex items-center justify-end text-gray-500 space-x-3">
-        <p className="hidden md:inline-flex lg:text-lg text-sm cursor-pointe">
-          Become a host
-        </p>
-        <GlobeAltIcon className="h-6 hidden md:inline-flex cursor-pointer" />
-        <div className="flex border-2 border-opacity-30 space-x-2 p-2 rounded-full border-gray-400">
-          <MenuIcon className="h-6" />
-          <UserCircleIcon className="h-6" />
+      <div className="flex items-center justify-end text-gray-500 lg:space-x-3">
+        <div className="px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer">
+          <p className="hidden md:inline-flex lg:text-lg text-sm font-semibold cursor-pointe">
+            Become a host
+          </p>
+        </div>
+        <div className="p-2 hidden md:inline-flex hover:bg-gray-100 rounded-full cursor-pointer">
+          <GlobeAltIcon className="h-6 hidden md:inline-flex" />
+        </div>
+        <div className="flex button-hover-action border-2 border-opacity-30 space-x-2 p-2 rounded-full border-gray-400">
+          <MenuIcon className="md:h-6 h-4" />
+          <UserCircleIcon className="md:h-6 h-4" />
         </div>
       </div>
 
@@ -94,7 +98,7 @@ function Header({placeholder}) {
             minDate={new Date()}
             onChange={handleSelect}
           />
-          <div className="flex items-center border-b mb-4">
+          <div className="flex items-center border-b mb-4 pb-3">
             <h2 className="text-2xl font-semibold flex-grow">
               Number of Guests:{" "}
             </h2>
@@ -111,7 +115,7 @@ function Header({placeholder}) {
             <button onClick={resetInput} className="flex-grow text-gray-500">
               Cancel
             </button>
-            <button onClick={search} className="flex-grow text-red-600">
+            <button onClick={search} className="flex-grow bg-red-500 hover:brightness-110 transition transform duration-200 ease-out text-white rounded-full px-2 py-4">
               Search
             </button>
           </div>

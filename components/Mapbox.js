@@ -3,11 +3,11 @@ import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import getCenter from "geolib/es/getCenter";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 
-function Mapbox({ searchResult }) {
+function Mapbox({ filterSearch }) {
   const [popup, setPopup] = useState({});
 
   //Tranform object into another object
-  const coordinates = searchResult.map((result) => ({
+  const coordinates = filterSearch.map((result) => ({
     longitude: result.long,
     latitude: result.lat,
   }));
@@ -30,7 +30,7 @@ function Mapbox({ searchResult }) {
       mapboxApiAccessToken={process.env.mapbox_key}
       onViewportChange={(viewport) => setViewport(viewport)}
     >
-      {searchResult.map((result) => (
+      {filterSearch.map((result) => (
         <div key={result.long}>
           <Marker
             longitude={result.long}
