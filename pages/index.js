@@ -54,7 +54,7 @@ export default function Home({ exploreData, cardsData }) {
         />
 
         <section>
-          <h2 className="text-4xl font-semibold py-4 p-5">
+          <h2 className="text-4xl font-semibold py-2 p-5">
             Discover things to do
           </h2>
           <div className="flex space-x-3 overflow-scroll scrollbar-hide p-3 pb-5 ml-3">
@@ -67,7 +67,7 @@ export default function Home({ exploreData, cardsData }) {
                   className="rounded-xl"
                 ></Image>
               </div>
-              <p className="font-semibold">Experiences</p>
+              <span className="font-semibold">Experiences</span>
               <p className="font-extralight text-sm">
                 Find unforgettable activities near you.
               </p>
@@ -81,7 +81,7 @@ export default function Home({ exploreData, cardsData }) {
                   className="rounded-xl"
                 ></Image>
               </div>
-              <p className="font-semibold">Online Experiences</p>
+              <span className="font-semibold">Online Experiences</span>
               <p className="font-extralight text-sm">
                 Live, interactive activities led by Hosts.
               </p>
@@ -95,7 +95,7 @@ export default function Home({ exploreData, cardsData }) {
                   className="rounded-xl"
                 ></Image>
               </div>
-              <p className="font-semibold">Featured collection: Wanderlust</p>
+              <span className="font-semibold">Featured collection: Wanderlust</span>
               <p className="font-extralight text-sm">
                 Travel from home with Online Experiences.
               </p>

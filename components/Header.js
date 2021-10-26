@@ -76,8 +76,8 @@ function Header({ placeholder }) {
 
       {/* Sign up */}
       <div className="flex items-center justify-end text-gray-500 lg:space-x-3">
-        <div className="px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer">
-          <p className="hidden md:inline-flex lg:text-lg text-sm font-semibold cursor-pointe">
+        <div className="px-4 pt-4 hover:bg-gray-100 rounded-full cursor-pointer">
+          <p className="hidden md:inline-flex lg:text-lg text-sm font-semibold cursor-pointer">
             Become a host
           </p>
         </div>

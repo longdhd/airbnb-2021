@@ -5,8 +5,10 @@ import Header from "../components/Header";
 import {format} from 'date-fns';
 import InfoCard from "../components/InfoCard";
 import Mapbox from "../components/Mapbox";
-import { Popover, Button } from 'antd';
-import Loadable from 'react-loadable';
+import { Popover } from 'antd';
+import Loading from "../components/Loading";
+import { useDispatch } from "react-redux";
+import { displayLoadingAction, hideLoadingAction } from "../redux/actions/LoadingAction";
 
 function Search({searchResult}) {
   const router = useRouter();
@@ -15,7 +17,8 @@ function Search({searchResult}) {
   const formattedEndDate =  format(new Date(endDate), "dd, MMMM yyyy");
   const range = ` ${formattedStartDate} to ${formattedEndDate} `;
   const [filterSearch, setFilterSearch] = useState(searchResult);
-  const content = (
+  const dispatch = useDispatch();
+  const placeFilter = (
     <div className="space-y-2">
       <div className="flex space-x-4 items-start">
         <input id="entire" type="checkbox" className="h-6 w-6 mt-2"></input>
@@ -55,6 +58,7 @@ function Search({searchResult}) {
   console.log(searchResult)
   return (
     <div className="h-screen">
+      <Loading />
       <Header placeholder={`${location} | ${range} | ${guestNumber} guest(s)`}/>
       <main className="flex">
         <section className="flex-grow pt-14 px-16">
@@ -62,24 +66,32 @@ function Search({searchResult}) {
           <h1 className="text-3xl font-semibold mt-2 mb-6">Stays in {location}</h1>
           <div className="hidden md:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
               <p className="button-hover-action">Price</p>
-              <Popover content={content} placement="bottomRight" trigger="click">
+              <Popover content={placeFilter} placement="bottomRight" trigger="click">
                 <p className="button-hover-action">Type of Place</p>
               </Popover>
-              <p className="button-hover-action" onClick={() => {
+              <p className="button-hover-action" onClick={ () => {
                 let filter = searchResult.filter(search => search.description.toLowerCase().includes("wifi"));
+                dispatch(displayLoadingAction);
                 setFilterSearch(filter);
+                setTimeout (dispatch, 2000, hideLoadingAction);
               }}>Wifi</p>
               <p className="button-hover-action" onClick={() => {
                 let filter = searchResult.filter(search => search.description.toLowerCase().includes("kitchen"));
+                dispatch(displayLoadingAction);
                 setFilterSearch(filter);
+                setTimeout (dispatch, 2000, hideLoadingAction);
               }}>Kitchen</p>
               <p className="button-hover-action" onClick={() => {
                 let filter = searchResult.filter(search => search.description.toLowerCase().includes("washing machine"));
+                dispatch(displayLoadingAction);
                 setFilterSearch(filter);
+                setTimeout (dispatch, 2000, hideLoadingAction);
               }}>Washing machine</p>
               <p className="button-hover-action" onClick={() => {
                 let filter = searchResult.filter(search => search.description.toLowerCase().includes("free parking"));
+                dispatch(displayLoadingAction);
                 setFilterSearch(filter);
+                setTimeout (dispatch, 2000, hideLoadingAction);
               }}>Free Parking</p>
               <p className="button-hover-action">More filters</p>
           </div>
@@ -90,7 +102,7 @@ function Search({searchResult}) {
           ))}
           </div>
         </section>
-        <section className="hidden lg:inline-flex lg:min-w-[40%]">
+        <section className="hidden lg:inline-flex lg:min-w-[30%]">
           <Mapbox filterSearch={filterSearch}/>
         </section>
       </main>
