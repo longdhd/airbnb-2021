@@ -18,6 +18,7 @@ export default function Loading() {
               <InfoLoader />
               <InfoLoader />
               <InfoLoader />
+              <InfoLoader />
             </div>
           </div> : ''
           }

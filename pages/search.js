@@ -18,6 +18,8 @@ function Search({searchResult}) {
   const range = ` ${formattedStartDate} to ${formattedEndDate} `;
   const [filterSearch, setFilterSearch] = useState(searchResult);
   const dispatch = useDispatch();
+
+  //Place filter popover
   const placeFilter = (
     <div className="space-y-2">
       <div className="flex space-x-4 items-start">
@@ -51,10 +53,66 @@ function Search({searchResult}) {
       <hr/>
       <div className="flex justify-between pt-2">
         <button className="underline font-semibold px-4">Clear</button>
-        <button className="rounded-xl bg-gray-900 text-white font-semibold brightness-110 hover:brightness-90 px-6 py-2">Save</button>
+        <button className="rounded-xl bg-gray-900 text-white font-semibold brightness-110 hover:brightness-90 px-6 py-2" 
+                onClick={() => {
+                  let filter = [];
+                  if(document.querySelector('#entire').checked){
+                    for(let search of searchResult){
+                      if(search.title.toLowerCase().includes("house")){
+                        filter = [...filter,search];
+                      }else{
+                        filter = [...filter]
+                      }
+                    }
+                  }
+                  if(document.querySelector('#private').checked){
+                    for(let search of searchResult){
+                      if(search.title.toLowerCase().includes("apartment")){
+                        filter = [...filter,search];
+                      }else{
+                        filter = [...filter]
+                      }
+                    }
+                  }
+                  if(document.querySelector('#hotel').checked){
+                    for(let search of searchResult){
+                      if(search.title.toLowerCase().includes("hotel")){
+                        filter = [...filter,search];
+                      }else{
+                        filter = [...filter]
+                      }
+                    }
+                  }
+                  if(document.querySelector('#shared').checked){
+                    for(let search of searchResult){
+                      if(search.title.toLowerCase().includes("room")){
+                        filter = [...filter,search];
+                      }else{
+                        filter = [...filter]
+                      }
+                    }
+                  }
+                  dispatch(displayLoadingAction);
+                  setFilterSearch(filter);
+                  setTimeout (dispatch, 2000, hideLoadingAction);
+                }}
+        >Save</button>
       </div>
     </div>
   );
+
+  //Render search result
+  const renderInfo = () => {
+    if(filterSearch.length == 0){
+      return <div className="mt-5">
+        <h3 className="font-semibold text-2xl">No properties found</h3>
+        <p className="text-lg font-extralight">Try adjusting your search criteria by changing the date, clearing the filter or zooming out the map</p>
+      </div>
+    }
+    return filterSearch?.map(({img, location, title, description, star, price, total},index) => (
+    <InfoCard key={index} img={img} location={location} title={title} description={description} star={star} price={price} total={total}/>
+    ))
+  }
   console.log(searchResult)
   return (
     <div className="h-screen">
@@ -97,9 +155,7 @@ function Search({searchResult}) {
           </div>
 
           <div className="flex flex-col last:pb-5">
-          {filterSearch?.map(({img, location, title, description, star, price, total},index) => (
-            <InfoCard key={index} img={img} location={location} title={title} description={description} star={star} price={price} total={total}/>
-          ))}
+              {renderInfo()}
           </div>
         </section>
         <section className="hidden lg:inline-flex lg:min-w-[30%]">
