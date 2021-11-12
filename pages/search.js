@@ -1,6 +1,5 @@
 import { useRouter } from "next/dist/client/router";
-import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import {format} from 'date-fns';
@@ -8,37 +7,31 @@ import InfoCard from "../components/InfoCard";
 import Mapbox from "../components/Mapbox";
 import { InputNumber, Popover, Slider } from 'antd';
 import Loading from "../components/Loading";
-import { useDispatch, useSelector } from "react-redux";
 import { displayLoadingAction, hideLoadingAction } from "../redux/actions/LoadingAction";
-import { FILTER_SEARCH, GET_SEARCH } from "../redux/types/SearchType";
+import { useDispatch } from "react-redux";
 
 function Search({searchResult}) {
-  
-  const dispatch = useDispatch();
   const router = useRouter();
   const {location, startDate, endDate, guestNumber} = router.query;
-  const {searchOutput} = useSelector(state => state.SearchReducer);
+  const dispatch = useDispatch()
   
   const formattedStartDate =  format(new Date(startDate), "dd, MMMM yyyy");
   const formattedEndDate =  format(new Date(endDate), "dd, MMMM yyyy");
   const range = ` ${formattedStartDate} to ${formattedEndDate} `;
-  
-  const [filterSearch, setFilterSearch] = useState(searchOutput);
+
+  const [filterSearch,setFilterSearch] = useState(searchResult);
   const [disabledClear,setDisabledClear] = useState(true);
   const [disabledClearPrice,setClearPrice] = useState(true);
   const [inputValue,setInputValue] = useState([30,90]);
+  const [activeClassPrice,setActiveClassPrice] = useState('button-hover-action');
   const [activeClassPlace,setActiveClassPlace] = useState("button-hover-action");
   const [activeClassWifi,setActiveClassWifi] = useState("button-hover-action");
+  const [activeClassKitchen,setActiveClassKitchen] = useState("button-hover-action");
+  const [activeClassWashing,setActiveClassWashing] = useState("button-hover-action");
+  const [activeClassParking,setActiveClassParking] = useState("button-hover-action");
   const [typeOfPlace,setTypeOfPlace] = useState('Type Of Place');
+  const [price,setPrice] = useState('Price');
 
-  useEffect(() => {
-    dispatch({
-      type:GET_SEARCH,
-      searchOutput: searchResult
-    })
-  }, [])
-
-  console.log('searchOutput',searchOutput);
 
   //Place filter popover
   const placeFilter = (
@@ -87,7 +80,7 @@ function Search({searchResult}) {
                 onClick={() => {
                   let filter = [];
                   if(document.querySelector('#entire').checked){
-                    for(let search of searchOutput){
+                    for(let search of filterSearch){
                       if(search.title.toLowerCase().includes("house")){
                         filter = [...filter,search];
                       }else{
@@ -96,7 +89,7 @@ function Search({searchResult}) {
                     }
                   }
                   if(document.querySelector('#private').checked){
-                    for(let search of searchOutput){
+                    for(let search of filterSearch){
                       if(search.title.toLowerCase().includes("apartment")){
                         filter = [...filter,search];
                       }else{
@@ -105,7 +98,7 @@ function Search({searchResult}) {
                     }
                   }
                   if(document.querySelector('#hotel').checked){
-                    for(let search of searchOutput){
+                    for(let search of filterSearch){
                       if(search.title.toLowerCase().includes("hotel")){
                         filter = [...filter,search];
                       }else{
@@ -114,7 +107,7 @@ function Search({searchResult}) {
                     }
                   }
                   if(document.querySelector('#shared').checked){
-                    for(let search of searchOutput){
+                    for(let search of filterSearch){
                       if(search.title.toLowerCase().includes("room")){
                         filter = [...filter,search];
                       }else{
@@ -126,11 +119,8 @@ function Search({searchResult}) {
                     setActiveClassPlace("button-hover-action");
                     setTypeOfPlace('Type Of Place');
                     dispatch(displayLoadingAction);
-                    dispatch({
-                      type:GET_SEARCH,
-                      searchOutput: searchResult
-                    })
-                    setTimeout (dispatch, 2000, hideLoadingAction);
+                    setFilterSearch(searchResult);
+                    setTimeout (dispatch, 1500, hideLoadingAction);
                   }else{
                     setActiveClassPlace("button-hover-action-active");
                     if(document.querySelector('#shared').checked && !document.querySelector('#hotel').checked && !document.querySelector('#private').checked && !document.querySelector('#entire').checked){
@@ -145,11 +135,8 @@ function Search({searchResult}) {
                       setTypeOfPlace('Type Of Place');
                     }
                     dispatch(displayLoadingAction);
-                    dispatch({
-                      type: FILTER_SEARCH,
-                      filterOutput: filter
-                    })
-                    setTimeout (dispatch, 2000, hideLoadingAction);
+                    setFilterSearch(filter);
+                    setTimeout (dispatch, 1500, hideLoadingAction);
                   }
                 }}
         >Save</button>
@@ -170,19 +157,19 @@ function Search({searchResult}) {
             <span>max price</span>
           </div>
           <div className="row-span-1 flex items-center">
-          <InputNumber
-              min={30}
-              max={90}
-              style={{ margin: '0 16px'}}
-              size="large"
-              value={inputValue[0]}
-              formatter={value => `£ ${value}`}
-              parser={value => value.replace('£', '')}
-              onChange={(value) => {
-                setInputValue([value,90]);
-                setClearPrice(false);
-              }}  
-            />
+            <InputNumber
+                min={30}
+                max={90}
+                style={{ margin: '0 16px'}}
+                size="large"
+                value={inputValue[0]}
+                formatter={value => `£ ${value}`}
+                parser={value => value.replace('£', '')}
+                onChange={(value) => {
+                  setInputValue([value,90]);
+                  setClearPrice(false);
+                }}  
+              />
             <span className="text-lg">-</span>
             <InputNumber
             min={30}
@@ -217,7 +204,7 @@ function Search({searchResult}) {
         className="rounded-xl bg-gray-900 text-white font-semibold brightness-110 hover:brightness-90 px-6 py-2"
         onClick={() => {
           let filter= [];
-          for(let search of searchOutput){
+          for(let search of filterSearch){
             let stringToInteger = " / night";
             let searchPrice = search.price.replace('£','').replace(stringToInteger,'');
             if(searchPrice >= inputValue[0] && searchPrice <= inputValue[1] ){
@@ -227,11 +214,15 @@ function Search({searchResult}) {
             }
           }
           dispatch(displayLoadingAction);
-          dispatch({
-            type: FILTER_SEARCH,
-            filterOutput: filter
-          })
-          setTimeout (dispatch, 2000, hideLoadingAction);
+          setFilterSearch(filter);
+          if(inputValue[0] !== 30 && inputValue[1] !== 90){
+            setPrice('£' + inputValue[0] + ' - ' + '£' + inputValue[1]);
+            setActiveClassPrice('button-hover-action-active');
+          }else{
+            setPrice('Price');
+            setActiveClassPrice('button-hover-action');
+          }
+          setTimeout (dispatch, 1500, hideLoadingAction);
         }}>
           Save
         </button>
@@ -241,13 +232,13 @@ function Search({searchResult}) {
 
   //Render search result
   const renderInfo = () => {
-    if(searchOutput.length == 0){
+    if(filterSearch.length == 0){
       return <div className="mt-5">
         <h3 className="font-semibold text-2xl">No properties found</h3>
         <p className="text-lg font-extralight">Try adjusting your search criteria by changing the date, clearing the filter or zooming out the map</p>
       </div>
     }
-    return searchOutput?.map(({img, location, title, description, star, price, total},index) => (
+    return filterSearch?.map(({img, location, title, description, star, price, total},index) => (
     <InfoCard key={index} img={img} location={location} title={title} description={description} star={star} price={price} total={total}/>
     ))
   }
@@ -262,7 +253,7 @@ function Search({searchResult}) {
           <h1 className="text-3xl font-semibold mt-2 mb-6">Stays in {location}</h1>
           <div className="hidden md:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
               <Popover content={priceFilter} placement="bottomRight" trigger="click">
-                <p className="button-hover-action">Price</p>
+                <p className={activeClassPrice}>{price}</p>
               </Popover>
               <Popover content={placeFilter} placement="bottomRight" trigger="click">
                 <p className={activeClassPlace}>
@@ -271,52 +262,67 @@ function Search({searchResult}) {
               </Popover>
               <p className={activeClassWifi} onClick={ () => {
                 if(activeClassWifi !== 'button-hover-action-active'){
-                  let filter = searchOutput.filter(search => search.description.toLowerCase().includes("wifi"));
+                  let filter = filterSearch.filter(search => search.description.toLowerCase().includes("wifi"));
                   setActiveClassWifi('button-hover-action-active');
                   dispatch(displayLoadingAction);
-                  dispatch({
-                    type:FILTER_SEARCH,
-                    filterOutput: filter
-                  })
-                  setTimeout (dispatch, 2000, hideLoadingAction);
+                  setFilterSearch(filter);
+                  setTimeout (dispatch, 1500, hideLoadingAction);
                 }else{
                   setActiveClassWifi('button-hover-action');
                   dispatch(displayLoadingAction);
                   let filter = searchResult.filter(search => !search.description.toLowerCase().includes("wifi"));
-                  searchOutput.push(...filter);
-                  dispatch({
-                    type: FILTER_SEARCH,
-                    filterOutput : searchOutput
-                  })
-                  setTimeout (dispatch, 2000, hideLoadingAction);
+                  searchResult.push(...filter);
+                  setFilterSearch(searchResult);
+                  setTimeout (dispatch, 1500, hideLoadingAction);
                 }
               }}>Wifi</p>
-              <p className="button-hover-action" onClick={() => {
-                let filter = searchOutput.filter(search => search.description.toLowerCase().includes("kitchen"));
-                dispatch(displayLoadingAction);
-                dispatch({
-                  type:FILTER_SEARCH,
-                  filterOutput: filter
-                })
-                setTimeout (dispatch, 2000, hideLoadingAction);
+              <p className={activeClassKitchen} onClick={() => {
+                if(activeClassKitchen !== 'button-hover-action-active'){
+                  setActiveClassKitchen('button-hover-action-active');
+                  let filter = filterSearch.filter(search => search.description.toLowerCase().includes("kitchen"));
+                  dispatch(displayLoadingAction);
+                  setFilterSearch(filter);
+                  setTimeout (dispatch, 1500, hideLoadingAction);
+                }else{
+                  setActiveClassKitchen('button-hover-action');
+                  dispatch(displayLoadingAction);
+                  let filter = searchResult.filter(search => !search.description.toLowerCase().includes("kitchen"));
+                  searchResult.push(...filter);
+                  setFilterSearch(searchResult);
+                  setTimeout (dispatch, 1500, hideLoadingAction);
+                }
               }}>Kitchen</p>
-              <p className="button-hover-action" onClick={() => {
-                let filter = searchOutput.filter(search => search.description.toLowerCase().includes("washing machine"));
-                dispatch(displayLoadingAction);
-                dispatch({
-                  type:FILTER_SEARCH,
-                  filterOutput: filter
-                })
-                setTimeout (dispatch, 2000, hideLoadingAction);
+              <p className={activeClassWashing} onClick={() => {
+                if(activeClassWashing !== 'button-hover-action-active'){
+                  setActiveClassWashing('button-hover-action-active');
+                  let filter = filterSearch.filter(search => search.description.toLowerCase().includes("washing machine"));
+                  dispatch(displayLoadingAction);
+                  setFilterSearch(filter);
+                  setTimeout (dispatch, 1500, hideLoadingAction);
+                }else{
+                  setActiveClassWashing('button-hover-action');
+                  dispatch(displayLoadingAction);
+                  let filter = searchResult.filter(search => !search.description.toLowerCase().includes("washing machine"));
+                  searchResult.push(...filter);
+                  setFilterSearch(searchResult);
+                  setTimeout (dispatch, 1500, hideLoadingAction);
+                }
               }}>Washing machine</p>
-              <p className="button-hover-action" onClick={() => {
-                let filter = searchOutput.filter(search => search.description.toLowerCase().includes("free parking"));
-                dispatch(displayLoadingAction);
-                dispatch({
-                  type:FILTER_SEARCH,
-                  filterOutput: filter
-                })
-                setTimeout (dispatch, 2000, hideLoadingAction);
+              <p className={activeClassParking} onClick={() => {
+                if(activeClassParking !== 'button-hover-action-active'){
+                  setActiveClassParking('button-hover-action-active');
+                  let filter = filterSearch.filter(search => search.description.toLowerCase().includes("free parking"));
+                  dispatch(displayLoadingAction);
+                  setFilterSearch(filter);
+                  setTimeout (dispatch, 1500, hideLoadingAction);
+                }else{
+                  setActiveClassWashing('button-hover-action');
+                  dispatch(displayLoadingAction);
+                  let filter = searchResult.filter(search => !search.description.toLowerCase().includes("free parking"));
+                  searchResult.push(...filter);
+                  setFilterSearch(searchResult);
+                  setTimeout (dispatch, 1500, hideLoadingAction);
+                }
               }}>Free Parking</p>
               <p className="button-hover-action">More filters</p>
           </div>
@@ -326,7 +332,7 @@ function Search({searchResult}) {
           </div>
         </section>
         <section className="hidden lg:inline-flex lg:min-w-[30%]">
-          <Mapbox searchOutput={searchOutput}/>
+          <Mapbox searchResult={filterSearch}/>
         </section>
       </main>
 
