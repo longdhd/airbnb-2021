@@ -215,7 +215,7 @@ function Search({searchResult}) {
           }
           dispatch(displayLoadingAction);
           setFilterSearch(filter);
-          if(inputValue[0] !== 30 && inputValue[1] !== 90){
+          if(inputValue[0] !== 30 || inputValue[1] !== 90){
             setPrice('£' + inputValue[0] + ' - ' + '£' + inputValue[1]);
             setActiveClassPrice('button-hover-action-active');
           }else{
@@ -316,7 +316,7 @@ function Search({searchResult}) {
                   setFilterSearch(filter);
                   setTimeout (dispatch, 1500, hideLoadingAction);
                 }else{
-                  setActiveClassWashing('button-hover-action');
+                  setActiveClassParking('button-hover-action');
                   dispatch(displayLoadingAction);
                   let filter = searchResult.filter(search => !search.description.toLowerCase().includes("free parking"));
                   searchResult.push(...filter);

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import getCenter from "geolib/es/getCenter";
-import { LocationMarkerIcon } from "@heroicons/react/solid";
+import Image from "next/image";
+import { StarIcon } from "@heroicons/react/solid";
+
 
 function Mapbox({searchResult}) {
   const [popup, setPopup] = useState({});
@@ -39,19 +41,33 @@ function Mapbox({searchResult}) {
             offsetLeft={-20}
             offsetTop={-10}
           >
-            <p role="img" aria-label="push-pin" onClick={() => setPopup(result)} className="animate-bounce">
-              <LocationMarkerIcon className="text-red-400 h-12" />
-            </p>
+            <div role="img" aria-label="push-pin" onClick={() => setPopup(result)} className="hover:scale-110 transition duration-100 ease-out">
+              {/* <LocationMarkerIcon className="text-red-400 h-12" /> */}
+              <div className="bg-white rounded-lg px-3 font-bold h-8 w-full flex items-center">
+                {result.price.replace(' / night','')}
+              </div>
+            </div>
           </Marker>
-
+ 
           {popup.long === result.long ? (
             <Popup
-              className="z-50" 
+              className="z-50"
               onClose={() => setPopup({})}
               closeOnClick={true}
+              closeButton={false}
               latitude={result.lat}
               longitude={result.long}>
-              {result.title}
+              <div>
+                <div className="relative h-48 w-64">
+                  <Image className="rounded-2xl rounded-b-none" src={result.img} layout="fill" objectFit="cover" />
+                </div>
+                <div className="bg-white px-4 py-3 -space-y-2 rounded-b-2xl">  
+                  <div className="flex items-center mb-2"><StarIcon className="h-4 text-red-400"/><span className="ml-1">{result.star}</span></div>
+                  <div className="text-lg w-56 truncate">{result.title}</div>
+                  <div className="text-lg w-56 truncate">{result.description}</div>
+                  <div className="text-lg font-bold pt-2">{result.price.replace(' / night','')}<span className="font-normal"> / night</span></div>
+                </div>
+              </div>
             </Popup>
           ):(false)}
         </div>

@@ -1,0 +1,6 @@
+.mapboxgl-popup-content{
+    padding: 0 0 0 0 !important;
+    border-radius: 1rem !important;
+    /* border-bottom-right-radius: 1rem !important;
+    border-bottom-left-radius: 1rem !important; */
+}

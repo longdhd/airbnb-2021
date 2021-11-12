@@ -4,6 +4,7 @@ import ProgressBar from '@badrap/bar-of-progress';
 import Router from 'next/router';
 import 'antd/dist/antd.css';
 import {wrapper} from '../redux/store';
+import '../styles/Mapbox.css';
 
 const progress = new ProgressBar({
   size: 4,
