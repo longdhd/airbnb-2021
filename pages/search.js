@@ -248,15 +248,15 @@ function Search({searchResult}) {
   
   return (
     <div className="h-screen">
-      <Loading />
+      {/* <Loading /> */}
       <Header placeholder={`${location} | ${range} | ${guestNumber} guest(s)`}/>
       <main className="flex">
         <section className="pt-14 px-12">
-          {/* {isLoading ? <Loader />  :  */}
+          {isLoading ? <Loader />  : 
           <Fragment><p className="text-sm">300+ Stays - {range} - {guestNumber} guest{guestNumber > 1 ? 's' : ''}</p>
           <h1 className="text-3xl font-semibold mt-2 mb-6">Stays in {location}</h1>
           </Fragment>
-          {/* } */}
+          }
           <div className="hidden md:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
               <Popover content={priceFilter} placement="bottomRight" trigger="click">
                 <p className={activeClassPrice}>{price}</p>

@@ -22,9 +22,9 @@ function InfoCard({
 
   const {isLoading} = useSelector(state => state.LoadingReducer);
 
-  // if(isLoading){
-  //   return <InfoLoader />
-  // }
+  if(isLoading){
+    return <InfoLoader />
+  }
   
   return (
     <div className="flex py-7 px-2 pr-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out">

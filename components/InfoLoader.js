@@ -7,8 +7,8 @@ const InfoLoader = (props) => (
     <rect x="371" y="17" rx="10" ry="10" width="233" height="20" />
     <rect x="371" y="71" rx="10" ry="10" width="315" height="20" />
     <rect x="371" y="125" rx="10" ry="10" width="420" height="33" />
-    <rect x="371" y="216" rx="5" ry="5" width="195" height="13" />
-    <rect x="371" y="251" rx="5" ry="5" width="195" height="13" />
+    <rect x="588" y="196" rx="5" ry="5" width="195" height="13" />
+    <rect x="371" y="251" rx="5" ry="5" width="420" height="13" />
   </ContentLoader>
 );
 export default InfoLoader;
