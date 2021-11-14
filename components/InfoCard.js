@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { HeartIcon } from "@heroicons/react/outline";
 import { StarIcon } from "@heroicons/react/solid";
+import InfoLoader from "./InfoLoader";
+import { useSelector } from "react-redux";
+
 
 const getRandomInt = (max) => {
   return Math.floor(Math.random() * max);
@@ -16,6 +19,12 @@ function InfoCard({
   price,
   total,
 }) {
+
+  const {isLoading} = useSelector(state => state.LoadingReducer);
+
+  // if(isLoading){
+  //   return <InfoLoader />
+  // }
   
   return (
     <div className="flex py-7 px-2 pr-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out">

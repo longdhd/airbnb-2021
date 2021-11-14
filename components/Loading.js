@@ -9,7 +9,7 @@ export default function Loading() {
   return (
       <Fragment>
           {isLoading ?
-          <div style={{position:'absolute',top:150,left:50,width:'60%',height:'100%',zIndex:49}}>
+          <div style={{position:'absolute',top:150,left:50,width:'65%',height:'100%',zIndex:49}}>
             <div style={{backgroundColor:'#fff', height:'100px'}}>
               <Loader />
             </div>

@@ -1,5 +1,5 @@
 import { useRouter } from "next/dist/client/router";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import {format} from 'date-fns';
@@ -8,12 +8,15 @@ import Mapbox from "../components/Mapbox";
 import { InputNumber, Popover, Slider } from 'antd';
 import Loading from "../components/Loading";
 import { displayLoadingAction, hideLoadingAction } from "../redux/actions/LoadingAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../components/Loader";
+import InfoLoader from "../components/InfoLoader";
 
 function Search({searchResult}) {
   const router = useRouter();
   const {location, startDate, endDate, guestNumber} = router.query;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const {isLoading} = useSelector(state => state.LoadingReducer);
   
   const formattedStartDate =  format(new Date(startDate), "dd, MMMM yyyy");
   const formattedEndDate =  format(new Date(endDate), "dd, MMMM yyyy");
@@ -146,7 +149,7 @@ function Search({searchResult}) {
 
   //Price filter popover
   const priceFilter = (
-    <div className="space-y-4">
+    <div className="space-y-4 w-[360px]">
       <p className="text-lg z-50 mb-32">The average nightly price is £54</p>
       <div className="relative z-50">
         <Slider range min={30} max={90} onChange={(value) => {setInputValue(value); setClearPrice(false)}}
@@ -156,11 +159,11 @@ function Search({searchResult}) {
             <span>min price</span>
             <span>max price</span>
           </div>
-          <div className="row-span-1 flex items-center">
+          <div className="row-span-1 flex justify-between">
             <InputNumber
                 min={30}
                 max={90}
-                style={{ margin: '0 16px'}}
+                style={{ margin: '0 16px',flexGrow:1}}
                 size="large"
                 value={inputValue[0]}
                 formatter={value => `£ ${value}`}
@@ -174,7 +177,7 @@ function Search({searchResult}) {
             <InputNumber
             min={30}
             max={90}
-            style={{ margin: '0 16px' }}
+            style={{ margin: '0 16px',flexGrow:1}}
             size="large"
             value={inputValue[1]}
             formatter={value => `£ ${value}`}
@@ -187,7 +190,7 @@ function Search({searchResult}) {
           </div>
         </div>
       </div>
-      <div className="absolute top-32 left-5 h-8 w-[85%] bg-center bg-no-repeat" style={{backgroundImage:'url(https://alignedleft.com/content/03-tutorials/01-d3/130-making-a-bar-chart/1.png)'}}>
+      <div className="absolute top-32 left-5 h-8 w-[90%] bg-center bg-no-repeat" style={{backgroundImage:'url(https://alignedleft.com/content/03-tutorials/01-d3/130-making-a-bar-chart/1.png)'}}>
       </div>
       <hr/>
       <div className="flex justify-between pt-1">
@@ -248,9 +251,12 @@ function Search({searchResult}) {
       <Loading />
       <Header placeholder={`${location} | ${range} | ${guestNumber} guest(s)`}/>
       <main className="flex">
-        <section className="flex-grow pt-14 px-16">
-          <p className="text-sm">300+ Stays - {range} - {guestNumber} guest{guestNumber > 1 ? 's' : ''}</p>
+        <section className="pt-14 px-12">
+          {/* {isLoading ? <Loader />  :  */}
+          <Fragment><p className="text-sm">300+ Stays - {range} - {guestNumber} guest{guestNumber > 1 ? 's' : ''}</p>
           <h1 className="text-3xl font-semibold mt-2 mb-6">Stays in {location}</h1>
+          </Fragment>
+          {/* } */}
           <div className="hidden md:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
               <Popover content={priceFilter} placement="bottomRight" trigger="click">
                 <p className={activeClassPrice}>{price}</p>
@@ -331,7 +337,7 @@ function Search({searchResult}) {
               {renderInfo()}
           </div>
         </section>
-        <section className="hidden lg:inline-flex lg:min-w-[30%]">
+        <section className="hidden lg:inline-flex lg:flex-grow lg:min-w-[30%]">
           <Mapbox searchResult={filterSearch}/>
         </section>
       </main>

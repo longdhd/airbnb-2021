@@ -29,7 +29,7 @@ function Mapbox({searchResult}) {
   return (
     <ReactMapGL
       {...viewport}
-      mapStyle="mapbox://styles/longdhd/ckv260t4x31xt15nps4nnmdzg/draft"
+      mapStyle="mapbox://styles/longdhd/ckvwepu8a0quo15tblife3ohk"
       mapboxApiAccessToken={process.env.mapbox_key}
       onViewportChange={(viewport) => setViewport(viewport)}
     >
@@ -41,8 +41,8 @@ function Mapbox({searchResult}) {
             offsetLeft={-20}
             offsetTop={-10}
           >
-            <div role="img" aria-label="push-pin" onClick={() => setPopup(result)} className="hover:scale-110 transition duration-100 ease-out">
-              {/* <LocationMarkerIcon className="text-red-400 h-12" /> */}
+            <div role="img" aria-label="push-pin" onClick={() => setPopup(result)} className="cursor-pointer hover:scale-110 transition duration-100 ease-out">
+              {}
               <div className="bg-white rounded-lg px-3 font-bold h-8 w-full flex items-center">
                 {result.price.replace(' / night','')}
               </div>
