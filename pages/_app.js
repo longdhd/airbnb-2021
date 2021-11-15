@@ -5,6 +5,7 @@ import Router from 'next/router';
 import 'antd/dist/antd.css';
 import {wrapper} from '../redux/store';
 import '../styles/Mapbox.css';
+import '../styles/Modal.css';
 
 const progress = new ProgressBar({
   size: 4,

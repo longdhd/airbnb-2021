@@ -1,0 +1,26 @@
+.ant-modal-content{
+    border-radius: 0.75rem !important;
+    min-width: 640px;
+    
+}
+
+.ant-modal-header{
+    border-top-left-radius: 0.75rem !important;
+    border-top-right-radius: 0.75rem !important;
+}
+
+.ant-modal-body{
+    min-height: 720px;
+}
+
+.ant-modal-title{
+    display: flex;
+    justify-content: center;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 600 !important;
+}
+
+.ant-switch-checked{
+    background-color: rgb(34, 34, 34) !important;
+}

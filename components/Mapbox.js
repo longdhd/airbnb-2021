@@ -29,7 +29,7 @@ function Mapbox({ searchResult }) {
     setViewport({
       ...viewport,
       width: window.innerWidth,
-      height: "100%"
+      height: '100%'
     });
   }
 
@@ -71,7 +71,7 @@ function Mapbox({ searchResult }) {
 
           {popup.long === result.long ? (
             <Popup
-              anchor="top"
+              anchor="top-left"
               className="z-50 mt-5"
               onClose={() => setPopup({})}
               closeOnClick={true}
