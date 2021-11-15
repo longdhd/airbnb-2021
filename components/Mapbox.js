@@ -20,16 +20,16 @@ function Mapbox({ searchResult }) {
     latitude: center.latitude,
     longitude: center.longitude,
     zoom: 11,
+    maxZoom: 16,
     width: "100%",
-    // height: "2600px",
     height: "100%",
   });
 
   const resize = () => {
     setViewport({
+      ...viewport,
       width: window.innerWidth,
-      height: window.innerHeight,
-      ...viewport
+      height: "100%"
     });
   }
 
@@ -71,7 +71,8 @@ function Mapbox({ searchResult }) {
 
           {popup.long === result.long ? (
             <Popup
-              className="z-50"
+              anchor="top"
+              className="z-50 mt-5"
               onClose={() => setPopup({})}
               closeOnClick={true}
               closeButton={false}

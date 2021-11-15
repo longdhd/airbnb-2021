@@ -2,8 +2,3 @@
     padding: 0 0 0 0 !important;
     border-radius: 1rem !important;
 }
-
-.mapboxgl-popup{
-    top: 14% !important;
-    left: 10px !important;
-}
