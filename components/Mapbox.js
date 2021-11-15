@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import getCenter from "geolib/es/getCenter";
 import Image from "next/image";
 import { StarIcon } from "@heroicons/react/solid";
 
-
-function Mapbox({searchResult}) {
+function Mapbox({ searchResult }) {
   const [popup, setPopup] = useState({});
 
   //Tranform object into another object
@@ -22,9 +21,25 @@ function Mapbox({searchResult}) {
     longitude: center.longitude,
     zoom: 11,
     width: "100%",
-    height: "2600px",
+    // height: "2600px",
+    height: "100%",
   });
 
+  const resize = () => {
+    setViewport({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      ...viewport
+    });
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', resize);
+    resize();
+    return () => {
+      window.removeEventListener('resize', resize);
+    }
+  })
 
   return (
     <ReactMapGL
@@ -41,14 +56,19 @@ function Mapbox({searchResult}) {
             offsetLeft={-20}
             offsetTop={-10}
           >
-            <div role="img" aria-label="push-pin" onClick={() => setPopup(result)} className="cursor-pointer hover:scale-110 transition duration-100 ease-out">
+            <div
+              role="img"
+              aria-label="push-pin"
+              onClick={() => setPopup(result)}
+              className="cursor-pointer hover:scale-110 transition duration-100 ease-out"
+            >
               {}
               <div className="bg-white rounded-lg px-3 font-bold h-8 w-full flex items-center">
-                {result.price.replace(' / night','')}
+                {result.price.replace(" / night", "")}
               </div>
             </div>
           </Marker>
- 
+
           {popup.long === result.long ? (
             <Popup
               className="z-50"
@@ -56,20 +76,36 @@ function Mapbox({searchResult}) {
               closeOnClick={true}
               closeButton={false}
               latitude={result.lat}
-              longitude={result.long}>
+              longitude={result.long}
+            >
               <div>
                 <div className="relative h-48 w-64">
-                  <Image className="rounded-2xl rounded-b-none" src={result.img} layout="fill" objectFit="cover" />
+                  <Image
+                    className="rounded-2xl rounded-b-none"
+                    src={result.img}
+                    layout="fill"
+                    objectFit="cover"
+                  />
                 </div>
-                <div className="bg-white px-4 py-3 -space-y-2 rounded-b-2xl">  
-                  <div className="flex items-center mb-2"><StarIcon className="h-4 text-red-400"/><span className="ml-1">{result.star}</span></div>
+                <div className="bg-white px-4 py-3 -space-y-2 rounded-b-2xl">
+                  <div className="flex items-center mb-2">
+                    <StarIcon className="h-4 text-red-400" />
+                    <span className="ml-1">{result.star}</span>
+                  </div>
                   <div className="text-lg w-56 truncate">{result.title}</div>
-                  <div className="text-lg w-56 truncate">{result.description}</div>
-                  <div className="text-lg font-bold pt-2">{result.price.replace(' / night','')}<span className="font-normal"> / night</span></div>
+                  <div className="text-lg w-56 truncate">
+                    {result.description}
+                  </div>
+                  <div className="text-lg font-bold pt-2">
+                    {result.price.replace(" / night", "")}
+                    <span className="font-normal"> / night</span>
+                  </div>
                 </div>
               </div>
             </Popup>
-          ):(false)}
+          ) : (
+            false
+          )}
         </div>
       ))}
     </ReactMapGL>
