@@ -5,14 +5,14 @@ import Header from "../components/Header";
 import { format } from "date-fns";
 import InfoCard from "../components/InfoCard";
 import Mapbox from "../components/Mapbox";
-import { InputNumber, Popover, Slider,  Modal,  Switch, Checkbox } from "antd";
+import { InputNumber, Popover, Slider,  Modal } from "antd";
 import {
   displayLoadingAction,
   hideLoadingAction,
 } from "../redux/actions/LoadingAction";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
-import { CheckIcon } from "@heroicons/react/solid";
+import ModalContent from "../components/ModalContent";
 
 function Search({ searchResult }) {
   const router = useRouter();
@@ -47,8 +47,7 @@ function Search({ searchResult }) {
   const [typeOfPlace, setTypeOfPlace] = useState("Type Of Place");
   const [price, setPrice] = useState("Price");
 
-  //Modal
-
+  // Modal config
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -515,6 +514,7 @@ function Search({ searchResult }) {
             <Modal
               title="More filters"
               visible={isModalVisible}
+              bodyStyle={{overflowY: 'scroll'}}
               onOk={handleOk}
               onCancel={handleCancel}
               footer={[
@@ -524,57 +524,14 @@ function Search({ searchResult }) {
                 </div>
               ]}
             >
-              <section className="pb-7 border-b-2 border-gray-100">
-                <div>
-                  <h2 className="text-2xl font-semibold">Verified places</h2>
-                </div>
-                <div className="grid grid-cols-2">
-                  <div className="col-span-1 min-w-[360px] mt-3">
-                    <div className="text-lg">Airbnb Plus</div>
-                    <div className="text-gray-500">A selection of places to stay verified for quality and design</div>
-                  </div>
-                  <div className="col-span-1 flex justify-end items-center">
-                    <Switch checkedChildren={<CheckIcon />}/>
-                  </div>
-                </div>
-              </section>
-              <section className="mt-5 pb-7 border-b-2 border-gray-100">
-                <div>
-                  <h2 className="text-2xl font-semibold">More options</h2>
-                </div>
-                <div className="grid grid-cols-2">
-                  <div className="col-span-1 min-w-[360px] mt-3">
-                    <div className="text-lg">Superhost</div>
-                    <div className="text-gray-500">Stay with recognised hosts</div>
-                    <div className="underline font-semibold">Learn more</div>
-                  </div>
-                  <div className="col-span-1 flex justify-end items-center">
-                    <Switch checkedChildren={<CheckIcon />}/>
-                  </div>
-                </div>
-              </section>
-              <section className="mt-5 pb-7 border-b-2 border-gray-100">
-                <div>
-                  <h2 className="text-2xl font-semibold">Accessibility features</h2>
-                </div>
-                <div className="flex flex-row">
-                  <div className="mt-3">
-                    <div><Checkbox value="step" style={{fontSize:'1rem'}}>Step-free guest entrance</Checkbox></div>
-                    <div><Checkbox value="parking" style={{fontSize:'1rem'}}>Accessible parking spot</Checkbox></div>
-                  </div>
-                  <div className="mt-3 justify-end">
-                    <div><Checkbox value="step" style={{fontSize:'1rem'}}>Guest entrance wider than 32 inches (81 centimetres)</Checkbox></div>
-                    <div><Checkbox value="parking" style={{fontSize:'1rem'}}>Step-free path to the guest entrance</Checkbox></div>
-                  </div>
-                </div>
-              </section>
+              <ModalContent />
             </Modal>
           </div>
 
           <div className="flex flex-col last:pb-5">{renderInfo()}</div>
         </section>
         <section className="hidden lg:inline-flex lg:flex-grow lg:min-w-[30%]">
-          <Mapbox searchResult={filterSearch} />
+          <Mapbox filterSearch={filterSearch} />
         </section>
       </main>
 
