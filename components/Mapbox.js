@@ -63,7 +63,7 @@ function Mapbox({ filterSearch }) {
               className="cursor-pointer hover:scale-110 transition duration-100 ease-out"
             >
               {}
-              <div className="bg-white rounded-lg px-3 font-bold h-8 w-full flex items-center">
+              <div className="bg-white rounded-lg px-3 font-bold h-8 w-full flex items-center" style={{boxShadow:'rgba(0, 0, 0, 0.04) 0px 0px 0px 1px, rgba(0, 0, 0, 0.18) 0px 2px 4px'}}>
                 {result.price.replace(" / night", "")}
               </div>
             </div>

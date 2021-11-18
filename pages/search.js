@@ -25,6 +25,7 @@ function Search({ searchResult }) {
   const range = ` ${formattedStartDate} to ${formattedEndDate} `;
 
   const [filterSearch, setFilterSearch] = useState(searchResult);
+  console.log(filterSearch);
   const [disabledClear, setDisabledClear] = useState(true);
   const [disabledClearPrice, setClearPrice] = useState(true);
   const [inputValue, setInputValue] = useState([30, 90]);
@@ -310,9 +311,11 @@ function Search({ searchResult }) {
               let searchPrice = search.price
                 .replace("£", "")
                 .replace(stringToInteger, "");
+              
               if (
                 searchPrice >= inputValue[0] &&
                 searchPrice <= inputValue[1]
+                
               ) {
                 filter = [...filter, search];
               } else {
@@ -416,12 +419,17 @@ function Search({ searchResult }) {
                 } else {
                   setActiveClassWifi("button-hover-action");
                   dispatch(displayLoadingAction);
-                  let filter = searchResult.filter(
-                    (search) =>
-                      !search.description.toLowerCase().includes("wifi")
-                  );
-                  searchResult.push(...filter);
-                  setFilterSearch(searchResult);
+                  let filter = [];
+                  for(let sR in searchResult){
+                    if(!searchResult[sR].description.toLowerCase().includes("wifi")){
+                      let index = filterSearch.findIndex(fS => fS.title === searchResult[sR].title);
+                      if(index == -1){
+                        filter = [...filter,searchResult[sR]];
+                      }
+                    }
+                  };
+                  filterSearch.push(...filter);
+                  setFilterSearch(filterSearch);
                   setTimeout(dispatch, 1500, hideLoadingAction);
                 }
               }}
@@ -442,12 +450,17 @@ function Search({ searchResult }) {
                 } else {
                   setActiveClassKitchen("button-hover-action");
                   dispatch(displayLoadingAction);
-                  let filter = searchResult.filter(
-                    (search) =>
-                      !search.description.toLowerCase().includes("kitchen")
-                  );
-                  searchResult.push(...filter);
-                  setFilterSearch(searchResult);
+                  let filter = [];
+                  for(let sR in searchResult){
+                    if(!searchResult[sR].description.toLowerCase().includes("kitchen")){
+                      let index = filterSearch.findIndex(fS => fS.title === searchResult[sR].title);
+                      if(index == -1){
+                        filter = [...filter,searchResult[sR]];
+                      }
+                    }
+                  };
+                  filterSearch.push(...filter);
+                  setFilterSearch(filterSearch);
                   setTimeout(dispatch, 1500, hideLoadingAction);
                 }
               }}
