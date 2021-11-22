@@ -28,7 +28,7 @@ function Mapbox({ filterSearch }) {
   const resize = () => {
     setViewport({
       ...viewport,
-      width: window.innerWidth,
+      width: '100%',
       height: '100%'
     });
   }

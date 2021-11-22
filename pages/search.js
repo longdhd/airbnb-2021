@@ -314,7 +314,7 @@ function Search({ searchResult }) {
               
               if (
                 searchPrice >= inputValue[0] &&
-                searchPrice <= inputValue[1]
+                searchPrice <= inputValue[1] 
                 
               ) {
                 filter = [...filter, search];
@@ -481,14 +481,17 @@ function Search({ searchResult }) {
                 } else {
                   setActiveClassWashing("button-hover-action");
                   dispatch(displayLoadingAction);
-                  let filter = searchResult.filter(
-                    (search) =>
-                      !search.description
-                        .toLowerCase()
-                        .includes("washing machine")
-                  );
-                  searchResult.push(...filter);
-                  setFilterSearch(searchResult);
+                  let filter = [];
+                  for(let sR in searchResult){
+                    if(!searchResult[sR].description.toLowerCase().includes("washing machine")){
+                      let index = filterSearch.findIndex(fS => fS.title === searchResult[sR].title);
+                      if(index == -1){
+                        filter = [...filter,searchResult[sR]];
+                      }
+                    }
+                  };
+                  filterSearch.push(...filter);
+                  setFilterSearch(filterSearch);
                   setTimeout(dispatch, 1500, hideLoadingAction);
                 }
               }}
@@ -509,12 +512,17 @@ function Search({ searchResult }) {
                 } else {
                   setActiveClassParking("button-hover-action");
                   dispatch(displayLoadingAction);
-                  let filter = searchResult.filter(
-                    (search) =>
-                      !search.description.toLowerCase().includes("free parking")
-                  );
-                  searchResult.push(...filter);
-                  setFilterSearch(searchResult);
+                  let filter = [];
+                  for(let sR in searchResult){
+                    if(!searchResult[sR].description.toLowerCase().includes("free parking")){
+                      let index = filterSearch.findIndex(fS => fS.title === searchResult[sR].title);
+                      if(index == -1){
+                        filter = [...filter,searchResult[sR]];
+                      }
+                    }
+                  };
+                  filterSearch.push(...filter);
+                  setFilterSearch(filterSearch);
                   setTimeout(dispatch, 1500, hideLoadingAction);
                 }
               }}
@@ -543,7 +551,7 @@ function Search({ searchResult }) {
 
           <div className="flex flex-col last:pb-5">{renderInfo()}</div>
         </section>
-        <section className="hidden lg:inline-flex lg:flex-grow lg:min-w-[30%]">
+        <section className="hidden lg:inline-flex lg:flex-grow lg:min-w-[40%]">
           <Mapbox filterSearch={filterSearch} />
         </section>
       </main>
